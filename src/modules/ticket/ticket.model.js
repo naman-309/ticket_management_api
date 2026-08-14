@@ -110,3 +110,33 @@ export const deleteTicketModel = async (id) => {
 
     return rows[0];
 };
+
+//
+// User ko id se find karega
+export const findUserByIdModel = async (id) => {
+
+    const { rows } = await pool.query(
+        `SELECT id, name, email, role
+     FROM users
+     WHERE id = $1`,
+        [id]
+    );
+
+    return rows[0];
+};
+
+
+// Ticket ko agent assign karega
+export const assignTicketModel = async (ticketid, agentid) => {
+
+    const { rows } = await pool.query(
+        `UPDATE tickets
+     SET agentid = $1,
+         updatedat = CURRENT_TIMESTAMP
+     WHERE id = $2
+     RETURNING *`,
+        [agentid, ticketid]
+    );
+
+    return rows[0];
+};

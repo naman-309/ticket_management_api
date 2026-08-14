@@ -1,8 +1,9 @@
 // TICKET ROUTES
 import express from "express";
 
-import { createTicket, getTickets, getTicket, updateTicket, deleteTicket } from "./ticket.controller.js";
+import { createTicket, getTickets, getTicket, updateTicket, deleteTicket, assignTicket } from "./ticket.controller.js";
 import { authenticateUser } from "../../middleware/auth.verify.middleware.js";
+import { authorizeRoles } from "../../middleware/verify.role.middleware.js";
 const router = express.Router();
 
 
@@ -23,5 +24,10 @@ router.put("/updatebyid/:id", authenticateUser, updateTicket);
 
 // delete ticket by id route
 router.delete("/deletebyid/:id", authenticateUser, deleteTicket);
+
+// assign ticket to agent route     
+router.patch("/byid/:id/assign", authenticateUser, authorizeRoles("Admin"), assignTicket);
+
+
 export default router;
 

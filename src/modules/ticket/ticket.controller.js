@@ -1,5 +1,9 @@
 // TICKET CONTROLLER
-import { createTicketModel, getTicketsModel, getTicketByIdModel, updateTicketModel, deleteTicketModel } from "./ticket.model.js";
+import {
+    createTicketModel, getTicketsModel, getTicketByIdModel, updateTicketModel, deleteTicketModel,
+    findUserByIdModel,
+    assignTicketModel
+} from "./ticket.model.js";
 
 
 // Customer new ticket create karega
@@ -248,7 +252,7 @@ export const updateTicket = async (req, res, next) => {
     }
 };
 // deleteTicket
-
+// role base ticket delete karega - a on the basis of ticket id
 export const deleteTicket = async (req, res, next) => {
     try {
 
@@ -286,7 +290,6 @@ export const deleteTicket = async (req, res, next) => {
             });
         }
 
-
         const deletedTicket = await deleteTicketModel(id);
 
         return res.status(200).json({
@@ -298,4 +301,69 @@ export const deleteTicket = async (req, res, next) => {
         next(error);
     }
 };
+
+
 // assignTicket
+
+export const assignTicket = async (req, res, next) => {
+    try {
+
+        // URL se ticket id
+        const ticketid = req.params.id;
+
+        // Body se agent id
+        const { agentid } = req.body;
+
+
+        // agentid required hai
+        if (!agentid) {
+            return res.status(400).json({
+                message: "Agent id is required"
+            });
+        }
+
+
+        // Pehle ticket check karo
+        const ticket = await getTicketByIdModel(ticketid);
+
+        if (!ticket) {
+            return res.status(404).json({
+                message: "Ticket not found"
+            });
+        }
+
+
+        // Ab user check karo
+        const agent = await findUserByIdModel(agentid);
+
+        if (!agent) {
+            return res.status(404).json({
+                message: "Agent not found"
+            });
+        }
+
+
+        // User exist karta hai but Agent nahi hai
+        if (agent.role !== "Agent") {
+            return res.status(400).json({
+                message: "Selected user is not an Agent"
+            });
+        }
+
+
+        // Ticket me agentid update
+        const updatedTicket = await assignTicketModel(
+            ticketid,
+            agentid
+        );
+
+
+        return res.status(200).json({
+            message: "Ticket assigned successfully",
+            ticket: updatedTicket
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
