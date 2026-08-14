@@ -1,7 +1,7 @@
 // TICKET ROUTES
 import express from "express";
 
-import { createTicket, getTickets, getTicket, updateTicket } from "./ticket.controller.js";
+import { createTicket, getTickets, getTicket, updateTicket, deleteTicket } from "./ticket.controller.js";
 import { authenticateUser } from "../../middleware/auth.verify.middleware.js";
 const router = express.Router();
 
@@ -17,6 +17,11 @@ router.get("/", authenticateUser, getTickets);
 
 router.get("/byid/:id", authenticateUser, getTicket);
 
+// update ticket by id route
 router.put("/updatebyid/:id", authenticateUser, updateTicket);
 
+
+// delete ticket by id route
+router.delete("/deletebyid/:id", authenticateUser, deleteTicket);
 export default router;
+

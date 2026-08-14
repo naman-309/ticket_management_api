@@ -97,3 +97,16 @@ export const updateTicketModel = async (
 
     return rows[0];
 };
+
+// Ticket delete karega
+export const deleteTicketModel = async (id) => {
+
+    const { rows } = await pool.query(
+        `DELETE FROM tickets
+     WHERE id = $1
+     RETURNING *`,
+        [id]
+    );
+
+    return rows[0];
+};

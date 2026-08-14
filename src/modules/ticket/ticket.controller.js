@@ -1,5 +1,5 @@
 // TICKET CONTROLLER
-import { createTicketModel, getTicketsModel, getTicketByIdModel, updateTicketModel } from "./ticket.model.js";
+import { createTicketModel, getTicketsModel, getTicketByIdModel, updateTicketModel, deleteTicketModel } from "./ticket.model.js";
 
 
 // Customer new ticket create karega
@@ -248,4 +248,54 @@ export const updateTicket = async (req, res, next) => {
     }
 };
 // deleteTicket
+
+export const deleteTicket = async (req, res, next) => {
+    try {
+
+        const id = req.params.id;
+        const user = req.user;
+
+        // Pehle ticket find karenge
+        const ticket = await getTicketByIdModel(id);
+
+        if (!ticket) {
+            return res.status(404).json({
+                message: "Ticket not found"
+            });
+        }
+
+
+        // Customer sirf apni ticket delete kar sakta hai
+        if (
+            user.role === "Customer" &&
+            ticket.customerid !== user.id
+        ) {
+            return res.status(403).json({
+                message: "You cannot delete this ticket"
+            });
+        }
+
+
+        // Agent sirf assigned ticket delete kar sakta hai
+        if (
+            user.role === "Agent" &&
+            ticket.agentid !== user.id
+        ) {
+            return res.status(403).json({
+                message: "This ticket is not assigned to you"
+            });
+        }
+
+
+        const deletedTicket = await deleteTicketModel(id);
+
+        return res.status(200).json({
+            message: "Ticket deleted successfully",
+            ticket: deletedTicket
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
 // assignTicket
