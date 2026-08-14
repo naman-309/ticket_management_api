@@ -7,7 +7,7 @@ Node.js + Express.js + Neon PostgreSQL
 - Full folder structure
 - Neon DB connection
 - setupDb.js
-- Register
+- Register  
 - Login
 - Logout
 - bcrypt password hashing
