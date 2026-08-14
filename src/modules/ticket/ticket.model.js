@@ -18,41 +18,255 @@ export const createTicketModel = async (title, description, priority, customerid
 
 
 // Role ke hisaab se tickets nikalne ke liye
-export const getTicketsModel = async (user) => {
+export const getTicketsModel = async (
+    user,
+    status,
+    priority,
+    limit,
+    offset
+) => {
 
-    // Admin -> sab tickets
+    // ---------------- ADMIN ----------------
+
     if (user.role === "Admin") {
+
+        // status + priority
+        if (status && priority) {
+            const { rows } = await pool.query(
+                `SELECT * FROM tickets
+         WHERE status = $1
+         AND priority = $2
+         ORDER BY createdat DESC
+         LIMIT $3 OFFSET $4`,
+                [
+                    status,
+                    priority,
+                    limit,
+                    offset
+                ]
+            );
+
+            return rows;
+        }
+
+
+        // only status
+        if (status) {
+            const { rows } = await pool.query(
+                `SELECT * FROM tickets
+         WHERE status = $1
+         ORDER BY createdat DESC
+         LIMIT $2 OFFSET $3`,
+                [
+                    status,
+                    limit,
+                    offset
+                ]
+            );
+
+            return rows;
+        }
+
+
+        // only priority
+        if (priority) {
+            const { rows } = await pool.query(
+                `SELECT * FROM tickets
+         WHERE priority = $1
+         ORDER BY createdat DESC
+         LIMIT $2 OFFSET $3`,
+                [
+                    priority,
+                    limit,
+                    offset
+                ]
+            );
+
+            return rows;
+        }
+
+
+        // no filter
         const { rows } = await pool.query(
-            "SELECT * FROM tickets ORDER BY createdat DESC"
+            `SELECT * FROM tickets
+       ORDER BY createdat DESC
+       LIMIT $1 OFFSET $2`,
+            [
+                limit,
+                offset
+            ]
         );
 
         return rows;
     }
 
 
-    // Agent -> sirf assigned tickets
+
+    // ---------------- AGENT ----------------
+
     if (user.role === "Agent") {
+
+        // assigned + status + priority
+        if (status && priority) {
+            const { rows } = await pool.query(
+                `SELECT * FROM tickets
+         WHERE agentid = $1
+         AND status = $2
+         AND priority = $3
+         ORDER BY createdat DESC
+         LIMIT $4 OFFSET $5`,
+                [
+                    user.id,
+                    status,
+                    priority,
+                    limit,
+                    offset
+                ]
+            );
+
+            return rows;
+        }
+
+
+        // assigned + status
+        if (status) {
+            const { rows } = await pool.query(
+                `SELECT * FROM tickets
+         WHERE agentid = $1
+         AND status = $2
+         ORDER BY createdat DESC
+         LIMIT $3 OFFSET $4`,
+                [
+                    user.id,
+                    status,
+                    limit,
+                    offset
+                ]
+            );
+
+            return rows;
+        }
+
+
+        // assigned + priority
+        if (priority) {
+            const { rows } = await pool.query(
+                `SELECT * FROM tickets
+         WHERE agentid = $1
+         AND priority = $2
+         ORDER BY createdat DESC
+         LIMIT $3 OFFSET $4`,
+                [
+                    user.id,
+                    priority,
+                    limit,
+                    offset
+                ]
+            );
+
+            return rows;
+        }
+
+
+        // only assigned tickets
         const { rows } = await pool.query(
             `SELECT * FROM tickets
        WHERE agentid = $1
-       ORDER BY createdat DESC`,
-            [user.id]
+       ORDER BY createdat DESC
+       LIMIT $2 OFFSET $3`,
+            [
+                user.id,
+                limit,
+                offset
+            ]
         );
 
         return rows;
     }
 
 
-    // Customer -> sirf apne tickets
+
+    // ---------------- CUSTOMER ----------------
+
+    // own tickets + status + priority
+    if (status && priority) {
+        const { rows } = await pool.query(
+            `SELECT * FROM tickets
+       WHERE customerid = $1
+       AND status = $2
+       AND priority = $3
+       ORDER BY createdat DESC
+       LIMIT $4 OFFSET $5`,
+            [
+                user.id,
+                status,
+                priority,
+                limit,
+                offset
+            ]
+        );
+
+        return rows;
+    }
+
+
+    // own tickets + status
+    if (status) {
+        const { rows } = await pool.query(
+            `SELECT * FROM tickets
+       WHERE customerid = $1
+       AND status = $2
+       ORDER BY createdat DESC
+       LIMIT $3 OFFSET $4`,
+            [
+                user.id,
+                status,
+                limit,
+                offset
+            ]
+        );
+
+        return rows;
+    }
+
+
+    // own tickets + priority
+    if (priority) {
+        const { rows } = await pool.query(
+            `SELECT * FROM tickets
+       WHERE customerid = $1
+       AND priority = $2
+       ORDER BY createdat DESC
+       LIMIT $3 OFFSET $4`,
+            [
+                user.id,
+                priority,
+                limit,
+                offset
+            ]
+        );
+
+        return rows;
+    }
+
+
+    // only own tickets
     const { rows } = await pool.query(
         `SELECT * FROM tickets
      WHERE customerid = $1
-     ORDER BY createdat DESC`,
-        [user.id]
+     ORDER BY createdat DESC
+     LIMIT $2 OFFSET $3`,
+        [
+            user.id,
+            limit,
+            offset
+        ]
     );
 
     return rows;
 };
+
+
 
 
 // Single ticket ID se find karega

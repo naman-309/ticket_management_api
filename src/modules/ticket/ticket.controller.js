@@ -63,16 +63,85 @@ export const createTicket = async (req, res, next) => {
 // getTickets - Logged-in user ke allowed tickets return karega
 export const getTickets = async (req, res, next) => {
     try {
-
-        // authenticateUser middleware se mila
         const user = req.user;
 
-        const tickets = await getTicketsModel(user);
+        // Query params
+        const {
+            status,
+            priority,
+            page = 1,
+            limit = 5
+        } = req.query;
 
-        return res.status(200).json({
-            message: "Tickets fetched successfully",
-            tickets
-        });
+
+        // Status validation
+        if (status) {
+            const allowedStatus = [
+                "open",
+                "in_progress",
+                "resolved",
+                "closed"
+            ];
+
+            if (!allowedStatus.includes(status)) {
+                return res.status(400).json({
+                    message: "Invalid status"
+                });
+            }
+        }
+
+
+        // Priority validation
+        if (priority) {
+            const allowedPriority = [
+                "low",
+                "medium",
+                "high",
+                "urgent"
+            ];
+
+            if (!allowedPriority.includes(priority)) {
+                return res.status(400).json({
+                    message: "Invalid priority"
+                });
+            }
+        }
+
+
+        // Query params string me aate hain,
+        // isliye Number me convert kar rahe hain
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
+
+
+        if (pageNumber < 1 || limitNumber < 1) {
+            return res.status(400).json({
+                message: "Page and limit must be greater than 0"
+            });
+        }
+
+
+        // // Pagination formula
+        // const offset = (pageNumber - 1) * limitNumber;
+
+
+        // const tickets = await getTicketsModel(
+        //     user,
+        //     status,
+        //     priority,
+        //     limitNumber,
+        //     offset
+        // );
+
+
+        // return res.status(200).json({
+        //     message: "Tickets fetched successfully",
+
+        //     page: pageNumber,
+        //     limit: limitNumber,
+
+        //     tickets
+        // });
 
     } catch (error) {
         next(error);
