@@ -1,0 +1,336 @@
+{
+  "info": {
+    "_postman_id": "0c13491f-838d-4b72-be5b-24c23892ead9",
+    "name": "ticket management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "auth",
+      "item": [
+        {
+          "name": "register",
+          "id": "c320cf7e-9a74-4c93-bc5d-655dcc2c2ae3",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"name\": \"admin\",\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"admin123\"\r\n}\r\n\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/register",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "id": "82d82081-4be4-413a-8175-30de8dc6fc76",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    // \"name\": \"admin\",\r\n    \"email\": \"admin@gmail.com\",\r\n    \"password\": \"admin123\"\r\n}\r\n\r\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/auth/login",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "id": "edfba1e3-cc06-400c-9420-b905238d6e90",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/auth/logout",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "auth",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "4b161efd-7d7d-4dc9-bc7e-c1a2b36118a0"
+    },
+    {
+      "name": "ticket",
+      "item": [
+        {
+          "name": "create ticket",
+          "id": "6a51d061-00c7-4940-93f1-7ede64f125a8",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Order not delivered\",\r\n  \"description\": \"My order is stuck for 5 days\",\r\n  \"priority\": \"high\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/tickets/create",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tickets",
+                "create"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getTicket",
+          "id": "65595599-00d9-4777-a111-68442fb794de",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"title\": \"Order not delivered\",\r\n  \"description\": \"My order is stuck for 5 days\",\r\n  \"priority\": \"high\"\r\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/tickets/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tickets",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getTicket id",
+          "id": "0e359983-270f-4407-9514-93457e86cf6a",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "updateTicket id",
+          "id": "059665ec-8748-464e-a14a-6b59741f4083",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"status\" : \"closed\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/tickets/updatebyid/5",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tickets",
+                "updatebyid",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "deleteTicket id",
+          "id": "24eb273a-3084-4161-bfd2-601e6de58871",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5000/api/tickets/deletebyid/",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tickets",
+                "deletebyid",
+                ""
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "assignTicket id admin",
+          "id": "12a7122a-dc1d-4a14-83f4-62e595c1a4a2",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"agentid\": 3\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/tickets/byid/5/assign",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tickets",
+                "byid",
+                "5",
+                "assign"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getTicket by status",
+          "id": "8a24adf7-9c15-4923-90f4-cfdbe891f57e",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "getTicket by priority",
+          "id": "58b5fa58-2596-4150-a034-86db3008c588",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ],
+      "id": "03148ef2-2d52-4c7b-9533-eba0dd59133d"
+    },
+    {
+      "name": "comments",
+      "item": [
+        {
+          "name": "createComment",
+          "id": "a4f91fe2-2d6f-422e-9c38-5b4d3d1478e2",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n      \"message\": \"Please update my ticket aSAp\"\r\n\r\n}   ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:5000/api/tickets/1/comments",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "5000",
+              "path": [
+                "api",
+                "tickets",
+                "1",
+                "comments"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "getComment",
+          "id": "120b6e0e-4a65-4c07-8018-0cabdb5d34ac",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "id": "8c39a581-c37b-4e1e-b47e-8c23dd0dfe8e",
+          "request": {
+            "method": "GET",
+            "header": []
+          },
+          "response": []
+        }
+      ],
+      "id": "5d72c10c-e246-440d-8ffb-df69fd00b72f"
+    }
+  ]
+}
